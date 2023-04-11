@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 
-public class JwtUtil implements Builder, Secret, Audience, Issure, Token, ExpireAt, Generator, Verify, Operator {
+public class JwtUtil implements Builder, Secret, Audience, Issure, Token, ExpireAt, Operator {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static final String BEARER = "Bearer ";
@@ -28,6 +28,7 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
     private final Map<String, Object> payload = new HashMap<>();
     private JWTVerifier jwtVerifier;
     private DecodedJWT decodedJWT;
+    private String subject;
 
     private JwtUtil() {
 
@@ -68,7 +69,8 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
     }
 
     @Override
-    public Generator generator(Map<String, Object> payload) {
+    public Operator generator(Map<String, Object> payload, String subject) {
+        this.subject = subject;
         JWTCreator.Builder builder = JWT.create();
         this.issuedAt = new Date();
         this.jwtId = UUID.randomUUID().toString().toUpperCase();
@@ -83,44 +85,53 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
                 .withAudience(this.audience)
                 .withJWTId(this.jwtId)
                 .withKeyId(this.keyId)
-                .withPayload(this.payload)
-        ;
-        this.token = BEARER+builder.sign(Algorithm.HMAC256(this.secret));
+                .withPayload(this.payload);
+        if (this.subject != null) {
+            this.payload.put("sub", this.subject);
+            builder.withSubject(this.subject);
+        }
+        this.token = BEARER + builder.sign(Algorithm.HMAC256(this.secret));
         this.payload.put("iss", this.issure);
         this.payload.put("aud", this.audience);
         this.payload.put("exp", this.expireAt.getTime() / 1000);
         this.payload.put("jti", this.jwtId);
-        this.payload.put("iat", this.issuedAt.getTime()/1000);
+        this.payload.put("iat", this.issuedAt.getTime() / 1000);
         return this;
     }
 
     @Override
-    public Generator generator() {
-        return this.generator(null);
+    public Operator generator(Map<String, Object> payload) {
+        return this.generator(payload, null);
     }
 
     @Override
-    public Verify verify() throws IOException {
+    public Operator generator(String subject) {
+        return this.generator(null, subject);
+    }
+
+    @Override
+    public Operator generator() {
+        return this.generator(null, null);
+    }
+
+    @Override
+    public Operator verify() throws IOException {
         if (this.jwtVerifier == null) {
             this.jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
 
         }
         if (this.decodedJWT == null) {
-            this.decodedJWT = jwtVerifier.verify(token.replace(BEARER,""));
+            this.decodedJWT = jwtVerifier.verify(token.replace(BEARER, ""));
             this.audience = this.decodedJWT.getAudience().toArray(new String[0]);
             this.issure = this.decodedJWT.getIssuer();
             this.issuedAt = this.decodedJWT.getIssuedAt();
             this.expireAt = this.decodedJWT.getExpiresAt();
             this.jwtId = this.decodedJWT.getId();
             this.keyId = this.decodedJWT.getKeyId();
+            this.subject = this.decodedJWT.getSubject();
             this.payload.putAll(OBJECT_MAPPER.readValue(Base64.getUrlDecoder().decode(this.decodedJWT.getPayload()), new TypeReference<Map<String, Object>>() {
             }));
         }
-        return this;
-    }
-
-    @Override
-    public Operator build() {
         return this;
     }
 
@@ -208,7 +219,7 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
         if (this.audience == null) {
             sb.append("audience=null");
         } else {
-            sb.append("audience=").append(String.join(",",this.audience));
+            sb.append("audience=").append(String.join(",", this.audience));
         }
         sb.append(",issure=").append(this.issure);
         sb.append(",token=").append(this.token);
@@ -216,16 +227,17 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
         sb.append(",jwtId=").append(this.jwtId);
         sb.append(",keyId=").append(this.keyId);
         sb.append(",issuedAt=").append(this.issuedAt);
+        sb.append(",subject=").append(this.subject);
         sb.append(",payload={");
         this.payload.forEach((k, v) -> {
-            if (v.getClass().isArray()){
-                if (Objects.equals(v.getClass().getComponentType().getTypeName(), String.class.getTypeName())){
+            if (v.getClass().isArray()) {
+                if (Objects.equals(v.getClass().getComponentType().getTypeName(), String.class.getTypeName())) {
                     String[] vv = (String[]) v;
                     sb.append(k).append("=").append(String.join(",", vv)).append(",");
-                }else {
+                } else {
                     sb.append(k).append("=").append(v).append(",");
                 }
-            }else {
+            } else {
                 sb.append(k).append("=").append(v).append(",");
             }
         });

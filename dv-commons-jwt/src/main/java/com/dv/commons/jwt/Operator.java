@@ -21,7 +21,7 @@ public interface Operator {
 
     Date getIssuedAt();
 
-    Map<String,?> getPayload();
+    Map<String, ?> getPayload();
 
     boolean getClaimAsBool(String name);
 
