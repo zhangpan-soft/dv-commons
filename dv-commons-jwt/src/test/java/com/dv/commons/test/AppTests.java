@@ -2,7 +2,6 @@ package com.dv.commons.test;
 
 import com.dv.commons.jwt.JwtUtil;
 import com.dv.commons.jwt.Operator;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,12 +19,12 @@ public class AppTests {
         payload.put("sub","123123123");
         payload.put("test","test");
         // 加签,并获取最终对象
-        Operator operator = JwtUtil.builder().secret(key).audience("admin").issure("admin").expireAt(expireAt).generator(payload).build();
+        Operator operator = JwtUtil.builder().secret(key).audience("admin").issure("admin").expireAt(expireAt).generator(payload);
         // 打印Token
         System.out.println(operator.getToken());
         System.out.println(operator);
         // 验签,并获取对象
-        Operator operator1 = JwtUtil.builder().secret(key).audience("admin").issure("admin").token(operator.getToken()).verify().build();
+        Operator operator1 = JwtUtil.builder().secret(key).audience("admin").issure("admin").token(operator.getToken()).verify();
         System.out.println(operator1);
     }
 }
