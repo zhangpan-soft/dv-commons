@@ -11,23 +11,75 @@ public class Result<T> {
     private T data;
     private String tips;
 
+    public static Result<Void> ok(){
+        Create<Void> create = create();
+        return create.ok().data();
+    }
+
+    public static Result<Void> ok(String tips){
+        Create<Void> create = create();
+        return create.ok().tips(tips).data();
+    }
+
+    public static <T> Result<T> ok(T data){
+        Create<T> create = create();
+        return create.ok().data(data);
+    }
+
+    public static <T> Result<T> ok(T data,String tips){
+        Create<T> create = create();
+        return create.ok().tips(tips).data(data);
+    }
+
+    public static <T> Result<T> ok(int code,String message,T data,String tips){
+        Create<T> create = create();
+        return create.with(code,message).tips(tips).data(data);
+    }
+
+    public static <T> Result<T> ok(int code,String message,T data){
+        return ok(code, message, data,null);
+    }
+
+    public static  Result<Void> ok(int code,String message){
+        return ok(code, message, null,null);
+    }
+
+    public static Result<Void> fail(){
+        Create<Void> create = create();
+        return create.fail().data();
+    }
+
+    public static Result<Void> fail(String tips){
+        Create<Void> create = create();
+        return create.fail().tips(tips).data();
+    }
+
+    public static <T> Result<T> fail(T data){
+        Create<T> create = create();
+        return create.fail().data(data);
+    }
+
+    public static <T> Result<T> fail(T data,String tips){
+        Create<T> create = create();
+        return create.fail().tips(tips).data(data);
+    }
+
+    public static <T> Result<T> fail(int code,String message,T data,String tips){
+        Create<T> create = create();
+        return create.with(code,message).tips(tips).data(data);
+    }
+
+    public static <T> Result<T> fail(int code,String message,T data){
+        return ok(code, message, data,null);
+    }
+
+    public static  Result<Void> fail(int code,String message){
+        return ok(code, message, null,null);
+    }
 
     public static <T> Create<T> create(){
         return new BuilderImpl<T>();
     }
-
-    public static <T> Builder<T> ok(){
-        return new BuilderImpl<T>().ok();
-    }
-
-    public static <T> Builder<T> fail(){
-        return new BuilderImpl<T>().fail();
-    }
-
-    public static <T> Builder<T> with(int code,String message){
-        return new BuilderImpl<T>().with(code,message);
-    }
-
 
     public interface Builder<T>{
 
@@ -75,6 +127,7 @@ public class Result<T> {
             response.tips = this.tips;
             response.code = this.code;
             response.message = this.message;
+            response.timestamp = System.currentTimeMillis();
             return response;
         }
 

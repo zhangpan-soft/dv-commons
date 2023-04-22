@@ -5,8 +5,6 @@ import java.util.Map;
 
 public interface Operator {
 
-    String getSecret();
-
     String[] getAudience();
 
     String getIssure();

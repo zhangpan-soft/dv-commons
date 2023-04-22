@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
 
 
 import java.io.IOException;
@@ -17,7 +18,6 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
 
     private static final String BEARER = "Bearer ";
 
-    private String secret;
     private String[] audience;
     private String issure;
     private String token;
@@ -29,6 +29,7 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
     private JWTVerifier jwtVerifier;
     private DecodedJWT decodedJWT;
     private String subject;
+    private Algorithm algorithm;
 
     private JwtUtil() {
 
@@ -40,7 +41,13 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
 
     @Override
     public Secret secret(String secret) {
-        this.secret = secret;
+        this.algorithm = Algorithm.HMAC256(secret);
+        return this;
+    }
+
+    @Override
+    public Secret algorithm(@NonNull Algorithm algorithm) {
+        this.algorithm = algorithm;
         return this;
     }
 
@@ -90,7 +97,7 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
             this.payload.put("sub", this.subject);
             builder.withSubject(this.subject);
         }
-        this.token = BEARER + builder.sign(Algorithm.HMAC256(this.secret));
+        this.token = BEARER + builder.sign(algorithm);
         this.payload.put("iss", this.issure);
         this.payload.put("aud", this.audience);
         this.payload.put("exp", this.expireAt.getTime() / 1000);
@@ -117,7 +124,7 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
     @Override
     public Operator verify() throws IOException {
         if (this.jwtVerifier == null) {
-            this.jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
+            this.jwtVerifier = JWT.require(algorithm).build();
 
         }
         if (this.decodedJWT == null) {
@@ -133,11 +140,6 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
             }));
         }
         return this;
-    }
-
-    @Override
-    public String getSecret() {
-        return this.secret;
     }
 
     @Override
