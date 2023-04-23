@@ -54,6 +54,6 @@ public class AppTest
                 .referer("s").userAgent("s")
                 .requestConfig(HttpRequestConfig.builder().proxy(HttpRequestConfig.HttpProxy.builder().host("").port(80).build()).build()).build()
                 .doRequest());
-        System.out.println(HttpApiRequest.builder().post("").json(new HashMap<>()).build().doRequest());
+//        System.out.println(HttpApiRequest.builder().post("").json(new HashMap<>()).build().doRequest());
     }
 }

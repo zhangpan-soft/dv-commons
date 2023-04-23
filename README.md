@@ -1,8 +1,11 @@
 # dv-commons
 - dv-commons-jwt
 - dv-commons-http
+- dv-commons-base
 
 # used
+- 添加mirror或repository为: `https://nexus.51000.net/repository/maven-public/`
+
 ### dv-commons-jwt
 ```java
     @Test
