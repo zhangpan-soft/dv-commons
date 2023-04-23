@@ -9,6 +9,7 @@
     <module>dv-commons-jwt</module>
     <module>dv-commons-http</module>
     <module>dv-commons-base</module>
+    <module>dv-commons-bom</module>
   </modules>
   <packaging>pom</packaging>
 
