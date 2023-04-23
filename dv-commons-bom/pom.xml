@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dv-commons-bom</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>dv-commons-bom</name>
     <url>http://maven.apache.org</url>
