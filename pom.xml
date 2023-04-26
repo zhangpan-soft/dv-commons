@@ -4,12 +4,13 @@
 
   <groupId>com.dv.commons</groupId>
   <artifactId>dv-commons</artifactId>
-  <version>2.1-SNAPSHOT</version>
+  <version>2.2-SNAPSHOT</version>
   <modules>
     <module>dv-commons-jwt</module>
     <module>dv-commons-http</module>
     <module>dv-commons-base</module>
     <module>dv-commons-bom</module>
+    <module>dv-commons-secure</module>
   </modules>
   <packaging>pom</packaging>
 
@@ -102,6 +103,10 @@
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
       </dependency>
     </dependencies>
   </dependencyManagement>
