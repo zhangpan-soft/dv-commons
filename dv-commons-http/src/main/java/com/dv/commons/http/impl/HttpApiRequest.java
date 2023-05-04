@@ -600,4 +600,29 @@ public class HttpApiRequest implements IHttpRequestOperator {
             return this;
         }
     }
+
+    public static IHttpData get(String url) {
+        return new Builder().get(url);
+    }
+
+    public static IHttpBody post(String url) {
+        return new Builder().post(url);
+    }
+
+    public static IHttpData delete(String url) {
+        return new Builder().delete(url);
+    }
+
+    public static IHttpBody put(String url) {
+        return new Builder().put(url);
+    }
+
+    public static IHttpBody head(String url) {
+        return new Builder().head(url);
+    }
+
+    public static IHttpBody patch(String url) {
+        return new Builder().post(url);
+    }
+
 }
