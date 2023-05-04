@@ -2,6 +2,7 @@
 - dv-commons-jwt
 - dv-commons-http
 - dv-commons-base
+- dv-commons-secure
 
 # used
 - 添加mirror或repository为: `https://nexus.51000.net/repository/maven-public/`
@@ -43,4 +44,16 @@
                 .requestConfig(HttpRequestConfig.builder().proxy(HttpRequestConfig.HttpProxy.builder().host("").port(80).build()).build()).build()
                 .doRequest());
         System.out.println(HttpApiRequest.builder().post("").json(new HashMap<>()).build().doRequest());
+```
+
+### dv-commons-secure
+- 支持脚本类型为 `GlueTypeEnum` 中表述的
+- bean或者groovy模式, 需要继承 `IHandler` 接口, bean模式
+- 基础执行器为`BaseExecutor`继承`IExecutor`,如果需要自己重写基础执行器, 使用java原生spi机制即可
+- 使用
+```java
+// 脚本
+ExecutorUtil.Instance.execute(new ExecutorParam().setExecutorParams("").setGlueType(GlueTypeEnum.GLUE_PYTHON).setGlueSource("print(123)"));
+// bean模式, 注意bean模式只支持spring bean, handleName为spring bean注入的名称
+ExecutorUtil.Instance.execute(new ExecutorParam().setExecutorParams("").setGlueType(GlueTypeEnum.BEAN).setHandleName("myHandler"));
 ```

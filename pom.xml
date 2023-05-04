@@ -4,13 +4,14 @@
 
   <groupId>com.dv.commons</groupId>
   <artifactId>dv-commons</artifactId>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.5-SNAPSHOT</version>
   <modules>
     <module>dv-commons-jwt</module>
     <module>dv-commons-http</module>
     <module>dv-commons-base</module>
     <module>dv-commons-bom</module>
     <module>dv-commons-secure</module>
+    <module>dv-commons-script</module>
   </modules>
   <packaging>pom</packaging>
 
@@ -27,6 +28,8 @@
     <httpclient.version>4.5.14</httpclient.version>
     <commons-codec.version>1.15</commons-codec.version>
     <commons-lang3.version>3.12.0</commons-lang3.version>
+    <groovy.version>4.0.11</groovy.version>
+    <jakarta.version>2.1.1</jakarta.version>
   </properties>
 
   <dependencies>
@@ -105,8 +108,14 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
+        <groupId>org.apache.groovy</groupId>
+        <artifactId>groovy</artifactId>
+        <version>${groovy.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
