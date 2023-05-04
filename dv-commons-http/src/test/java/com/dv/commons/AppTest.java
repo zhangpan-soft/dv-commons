@@ -44,7 +44,7 @@ public class AppTest
 
     public void test() throws RequestException{
         System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data().build().doRequest());
-        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data("test","test").build().doRequest());
+        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data("test","test").data().build().doRequest());
         System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data(new HashMap<>()).autoRedirect().global302Callback((request, response, location) -> {
 
         }).global401Callback((request, response) -> {

@@ -448,7 +448,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpRequestBuilder data(String name, Object value) {
+        public IHttpData data(String name, Object value) {
             if (this.request.contentType == null) {
                 this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
             }
