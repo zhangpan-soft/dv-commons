@@ -38,14 +38,14 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp() throws RequestException {
-        HttpApiResponse response = HttpApiRequest.builder().get("https://www.baidu.com").data().build().doRequest();
+        HttpApiResponse response = HttpApiRequest.builder().get("https://www.baidu.com").param().build().doRequest();
         System.out.println(response);
     }
 
     public void test() throws RequestException{
-        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data().build().doRequest());
-        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data("test","test").data().build().doRequest());
-        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").data(new HashMap<>()).autoRedirect().global302Callback((request, response, location) -> {
+        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").param().build().doRequest());
+        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").param("test","test").param().build().doRequest());
+        System.out.println(HttpApiRequest.builder().get("https://www.baidu.com").params(new HashMap<>()).autoRedirect().global302Callback((request, response, location) -> {
 
         }).global401Callback((request, response) -> {
 

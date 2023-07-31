@@ -58,9 +58,13 @@ public class HttpApiRequest implements IHttpRequestOperator {
      */
     private String userAgent;
     /**
-     * 请求参数
+     * 请求体参数
      */
     private final Map<String, Object> data = new HashMap<>();
+    /**
+     * url参数
+     */
+    private final Map<String, String> params = new HashMap<>();
     /**
      * 请求方式
      */
@@ -295,6 +299,9 @@ public class HttpApiRequest implements IHttpRequestOperator {
     private HttpUriRequest getUriRequest() throws URISyntaxException, RequestException {
         // 声明url
         URIBuilder uriBuilder = new URIBuilder(url);
+        if (!this.params.isEmpty()) {
+            params.forEach(uriBuilder::addParameter);
+        }
         HttpUriRequest httpUriRequest;
         switch (method) {
             case GET -> {
@@ -426,7 +433,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         return new Builder();
     }
 
-    public static class Builder implements IHttpUri, IHttpBody, IHttpData, IHttpRequestBuilder {
+    public static class Builder implements IHttpUri, IHttpBody, IHttpParam, IHttpRequestBuilder {
         private final HttpApiRequest request;
 
         private Builder() {
@@ -434,7 +441,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpRequestBuilder data(Map<String, Object> data) {
+        public Builder data(Map<String, Object> data) {
             if (data == null) return this;
             data.forEach(Builder.this::data);
             return this;
@@ -442,13 +449,13 @@ public class HttpApiRequest implements IHttpRequestOperator {
 
 
         @Override
-        public IHttpRequestBuilder data() {
+        public Builder data() {
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
             return this;
         }
 
         @Override
-        public IHttpData data(String name, Object value) {
+        public Builder data(String name, Object value) {
             if (this.request.contentType == null) {
                 this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
             }
@@ -460,57 +467,57 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpRequestBuilder cookie(Map<String, String> cookies) {
+        public Builder cookie(Map<String, String> cookies) {
             if (cookies == null) return this;
             this.request.cookies.putAll(cookies);
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder header(Map<String, String> headers) {
+        public Builder header(Map<String, String> headers) {
             if (headers == null) return this;
             headers.forEach(Builder.this::header);
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder header(String name, String value) {
+        public Builder header(String name, String value) {
             this.request.headers.put(name, value);
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder referer(String referer) {
+        public Builder referer(String referer) {
             this.request.referer = referer;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder userAgent(String userAgent) {
+        public Builder userAgent(String userAgent) {
             this.request.userAgent = userAgent;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder autoRedirect() {
+        public Builder autoRedirect() {
             this.request.autoRedirect = true;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder requestConfig(HttpRequestConfig requestConfig) {
+        public Builder requestConfig(HttpRequestConfig requestConfig) {
             this.request.requestConfig = requestConfig;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder global401Callback(Global401Callback global401Callback) {
+        public Builder global401Callback(Global401Callback global401Callback) {
             this.request.global401Callback = global401Callback;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder global302Callback(Global302Callback global302Callback) {
+        public Builder global302Callback(Global302Callback global302Callback) {
             this.request.global302Callback = global302Callback;
             return this;
         }
@@ -521,39 +528,56 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpRequestBuilder json(Object json) {
+        public Builder json(Object json) {
             this.request.json = json;
             this.request.contentType = ContentType.APPLICATION_JSON;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder json() {
+        public Builder json() {
             this.request.contentType = ContentType.APPLICATION_JSON;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder body(String body, ContentType contentType) {
+        public Builder body(String body, ContentType contentType) {
             this.request.body = body;
             this.request.contentType = contentType;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder body() {
+        public Builder body() {
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
             return this;
         }
 
         @Override
-        public IHttpRequestBuilder body(ContentType contentType) {
+        public Builder body(ContentType contentType) {
             this.request.contentType = contentType;
             return this;
         }
 
         @Override
-        public IHttpData get(String url) {
+        public Builder param(String name, Object value) {
+            this.request.params.put(name, value.toString());
+            return this;
+        }
+
+        @Override
+        public Builder params(Map<String, Object> nameValues) {
+            nameValues.forEach(Builder.this::param);
+            return this;
+        }
+
+        @Override
+        public Builder param() {
+            return this;
+        }
+
+        @Override
+        public Builder get(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.GET;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -561,7 +585,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpBody post(String url) {
+        public Builder post(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.POST;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -569,7 +593,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpData delete(String url) {
+        public Builder delete(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.DELETE;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -577,7 +601,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpBody put(String url) {
+        public Builder put(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.PUT;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -585,7 +609,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpBody head(String url) {
+        public Builder head(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.HEAD;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -593,7 +617,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
 
         @Override
-        public IHttpBody patch(String url) {
+        public Builder patch(String url) {
             this.request.url = url;
             this.request.method = HttpMethod.PATCH;
             this.request.contentType = ContentType.APPLICATION_FORM_URLENCODED;
@@ -601,7 +625,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         }
     }
 
-    public static IHttpData get(String url) {
+    public static IHttpParam get(String url) {
         return new Builder().get(url);
     }
 
@@ -609,7 +633,7 @@ public class HttpApiRequest implements IHttpRequestOperator {
         return new Builder().post(url);
     }
 
-    public static IHttpData delete(String url) {
+    public static IHttpParam delete(String url) {
         return new Builder().delete(url);
     }
 

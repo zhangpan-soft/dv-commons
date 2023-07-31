@@ -2,7 +2,9 @@ package com.dv.commons.http;
 
 import org.apache.http.entity.ContentType;
 
-public interface IHttpBody extends IHttpData {
+import java.util.Map;
+
+public interface IHttpBody extends IHttpParam {
     IHttpRequestBuilder json(Object json);
 
     IHttpRequestBuilder json();
@@ -13,4 +15,15 @@ public interface IHttpBody extends IHttpData {
 
     IHttpRequestBuilder body(ContentType contentType);
 
+    IHttpBody param(String name, Object value);
+
+    IHttpRequestBuilder params(Map<String, Object> nameValues);
+
+    IHttpRequestBuilder param();
+
+    IHttpBody data(String name, Object value);
+
+    IHttpRequestBuilder data(Map<String, Object> nameValues);
+
+    IHttpRequestBuilder data();
 }
