@@ -80,10 +80,23 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
         this.subject = subject;
         JWTCreator.Builder builder = JWT.create();
         this.issuedAt = new Date();
-        this.jwtId = UUID.randomUUID().toString().toUpperCase();
-        this.keyId = UUID.randomUUID().toString().toUpperCase();
+
         if (payload != null) {
+            if (payload.get("jti") != null) {
+                this.jwtId = String.valueOf(payload.get("jti"));
+            }
+            if (payload.get("kid") != null) {
+                this.keyId = String.valueOf(payload.get("kid"));
+            }
+            payload.remove("jti");
+            payload.remove("kid");
             this.payload.putAll(payload);
+        }
+        if (this.jwtId == null || this.jwtId.isBlank()) {
+            this.jwtId = UUID.randomUUID().toString().toUpperCase();
+        }
+        if (this.keyId == null || this.keyId.isBlank()) {
+            this.keyId = UUID.randomUUID().toString().toUpperCase();
         }
         builder
                 .withExpiresAt(this.expireAt)

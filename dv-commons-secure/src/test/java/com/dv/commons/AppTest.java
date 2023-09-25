@@ -10,6 +10,7 @@ import com.dv.commons.secure.sign.SignUtils;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -152,5 +153,9 @@ public class AppTest
             System.out.println(valid);
         }
 
+    }
+
+    public void testAes() {
+        System.out.println(SecureUtil.aes().key(DigestUtils.sha256("234567")).plaintext("123456").base64Strings());;
     }
 }
