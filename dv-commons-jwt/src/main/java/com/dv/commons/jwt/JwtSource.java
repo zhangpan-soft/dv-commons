@@ -13,7 +13,7 @@ import lombok.NonNull;
 import java.io.IOException;
 import java.util.*;
 
-public class JwtUtil implements Builder, Secret, Audience, Issure, Token, ExpireAt, Operator {
+public class JwtSource implements Secret, Audience, Issure, Token, ExpireAt, Operator {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static final String BEARER = "Bearer ";
@@ -29,27 +29,24 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
     private JWTVerifier jwtVerifier;
     private DecodedJWT decodedJWT;
     private String subject;
-    private Algorithm algorithm;
+    private final Algorithm algorithm;
 
-    private JwtUtil() {
-
-    }
-
-    public static Builder builder() {
-        return new JwtUtil();
-    }
-
-    @Override
-    public Secret secret(String secret) {
+    private JwtSource(String secret) {
         this.algorithm = Algorithm.HMAC256(secret);
-        return this;
     }
 
-    @Override
-    public Secret algorithm(@NonNull Algorithm algorithm) {
+    private JwtSource(Algorithm algorithm){
         this.algorithm = algorithm;
-        return this;
     }
+
+    public static Secret secret(@NonNull String secret){
+        return new JwtSource(secret);
+    }
+
+    public static Secret algorithm(@NonNull Algorithm algorithm){
+        return new JwtSource(algorithm);
+    }
+
 
     @Override
     public Audience audience(String... audience) {
@@ -238,10 +235,10 @@ public class JwtUtil implements Builder, Secret, Audience, Issure, Token, Expire
         }
         sb.append(",issure=").append(this.issure);
         sb.append(",token=").append(this.token);
-        sb.append(",expireAt=").append(this.expireAt);
+        sb.append(",expireAt=").append(this.expireAt.getTime());
         sb.append(",jwtId=").append(this.jwtId);
         sb.append(",keyId=").append(this.keyId);
-        sb.append(",issuedAt=").append(this.issuedAt);
+        sb.append(",issuedAt=").append(this.issuedAt.getTime());
         sb.append(",subject=").append(this.subject);
         sb.append(",payload={");
         this.payload.forEach((k, v) -> {

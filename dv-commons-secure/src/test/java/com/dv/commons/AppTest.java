@@ -10,12 +10,14 @@ import com.dv.commons.secure.sign.SignUtils;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -157,5 +159,17 @@ public class AppTest
 
     public void testAes() {
         System.out.println(SecureUtil.aes().key(DigestUtils.sha256("234567")).plaintext("123456").base64Strings());;
+    }
+
+    public void testA(){
+        MessageDigest sha1Digest = SecureUtil.getMd5Digest();
+        sha1Digest.update("1696742133000".getBytes(StandardCharsets.UTF_8));
+        byte[] digest = sha1Digest.digest();
+        String s = Hex.encodeHexString(digest);
+        System.out.println(s);
+        // @zTq&~sj
+        String s1 = SecureUtil.md5Hex(SecureUtil.md5Hex("1696742133000") + "@zTq&~sj");
+        System.out.println(s1);
+        System.out.println("12be08623084fd4e4e10536262e5e8e4");
     }
 }
