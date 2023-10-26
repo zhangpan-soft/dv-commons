@@ -5,29 +5,31 @@ import java.util.Map;
 
 public interface Operator {
 
-    String[] getAudience();
+    String[] audiences();
 
-    String getIssure();
+    String issuer();
 
-    String getToken();
+    String token();
 
-    Date getExpireAt();
+    Date expireAt();
 
-    String getJwtId();
+    String jti();
 
-    String getKeyId();
+    String kid();
 
-    Date getIssuedAt();
+    Date issuedAt();
 
-    Map<String, ?> getPayload();
+    Map<String, ?> payload();
 
-    boolean getClaimAsBool(String name);
+    boolean claimAsBool(String name);
 
-    int getClaimAsInt(String name);
+    int claimAsInt(String name);
 
-    long getClaimAsLong(String name);
+    long claimAsLong(String name);
 
-    Object getClaim(String name);
+    Object claim(String name);
 
-    String getClaimAsString(String name);
+    String claimAsString(String name);
+
+    String subject();
 }

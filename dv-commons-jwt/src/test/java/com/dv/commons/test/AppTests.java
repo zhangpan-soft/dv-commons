@@ -19,12 +19,12 @@ public class AppTests {
         payload.put("sub","123123123");
         payload.put("test","test");
         // 加签,并获取最终对象
-        Operator operator = JwtSource.secret(key).audience("admin").issure("admin").expireAt(expireAt).generator(payload);
+        Operator operator = JwtSource.secret(key).audience("admin").issuer("admin").expireAt(expireAt).generator(payload);
         // 打印Token
-        System.out.println(operator.getToken());
+        System.out.println(operator.token());
         System.out.println(operator);
         // 验签,并获取对象
-        Operator operator1 = JwtSource.secret(key).audience("admin").issure("admin").token(operator.getToken()).verify();
+        Operator operator1 = JwtSource.secret(key).token(operator.token()).verify();
         System.out.println(operator1);
     }
 }
