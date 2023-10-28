@@ -1,28 +1,44 @@
 package com.dv.commons.base.exceptions;
 
+import com.dv.commons.base.BaseStatus;
 import lombok.Getter;
 
 @Getter
 public class BaseException extends RuntimeException{
-    protected int code;
-    protected String message;
-    protected BaseException(int code,String message,Throwable e){
+    protected BaseStatus status;
+    protected BaseException(BaseStatus status, Throwable e){
+        super(status.message(),e);
+        this.status = status;
+    }
+
+    protected BaseException(BaseStatus status){
+        super(status.message());
+        this.status = status;
+    }
+
+    protected BaseException(BaseStatus status, String message, Throwable e) {
         super(message,e);
-        this.code = code;
-        this.message = message;
+        this.status = status;
     }
 
-    protected BaseException(int code,String message){
+    protected BaseException(BaseStatus status, String message) {
         super(message);
-        this.code = code;
-        this.message = message;
+        this.status = status;
     }
 
-    public static BaseException of(int code,String message){
-        return new BaseException(code,message);
+    public static BaseException of(BaseStatus status){
+        return new BaseException(status);
     }
 
-    public static BaseException of(int code,String message,Throwable e){
-        return new BaseException(code,message,e);
+    public static BaseException of(BaseStatus status,Throwable e){
+        return new BaseException(status,e);
+    }
+
+    public static BaseException of(BaseStatus status,String message, Throwable e){
+        return new BaseException(status,message,e);
+    }
+
+    public static BaseException of(BaseStatus status,String message){
+        return new BaseException(status,message);
     }
 }
