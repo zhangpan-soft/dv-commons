@@ -2,10 +2,12 @@ package com.dv.commons.base.responses;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 public class Result<T> {
 
-    private Integer code;
+    private Serializable code;
     private String message;
     private Long timestamp;
     private T data;
@@ -31,16 +33,16 @@ public class Result<T> {
         return create.ok().tips(tips).data(data);
     }
 
-    public static <T> Result<T> ok(int code,String message,T data,String tips){
+    public static <T> Result<T> ok(Serializable code,String message,T data,String tips){
         Create<T> create = create();
         return create.with(code,message).tips(tips).data(data);
     }
 
-    public static <T> Result<T> ok(int code,String message,T data){
+    public static <T> Result<T> ok(Serializable code,String message,T data){
         return ok(code, message, data,null);
     }
 
-    public static  Result<Void> ok(int code,String message){
+    public static  Result<Void> ok(Serializable code,String message){
         return ok(code, message, null,null);
     }
 
@@ -64,16 +66,16 @@ public class Result<T> {
         return create.fail().tips(tips).data(data);
     }
 
-    public static <T> Result<T> fail(int code,String message,T data,String tips){
+    public static <T> Result<T> fail(Serializable code,String message,T data,String tips){
         Create<T> create = create();
         return create.with(code,message).tips(tips).data(data);
     }
 
-    public static <T> Result<T> fail(int code,String message,T data){
+    public static <T> Result<T> fail(Serializable code,String message,T data){
         return ok(code, message, data,null);
     }
 
-    public static  Result<Void> fail(int code,String message){
+    public static  Result<Void> fail(Serializable code,String message){
         return ok(code, message, null,null);
     }
 
@@ -95,7 +97,7 @@ public class Result<T> {
 
         Builder<T> fail();
 
-        Builder<T> with(int code,String message);
+        Builder<T> with(Serializable code,String message);
 
     }
 
@@ -109,7 +111,7 @@ public class Result<T> {
         private static final int DEFAULT_FAILURE_CODE = -1;
         private static final String DEFAULT_FAILURE_MESSAGE = "failure";
 
-        private int code = DEFAULT_SUCCESS_CODE;
+        private Serializable code = DEFAULT_SUCCESS_CODE;
         private String message = DEFAULT_SUCCESS_MESSAGE;
         private String tips;
 
@@ -149,7 +151,7 @@ public class Result<T> {
         }
 
         @Override
-        public Builder<T> with(int code, String message) {
+        public Builder<T> with(Serializable code, String message) {
             this.code = code;
             this.message = message;
             return this;
