@@ -20,11 +20,13 @@ public class BaseException extends RuntimeException{
     protected BaseException(BaseStatus status, String tips, Throwable e) {
         super(tips,e);
         this.status = status;
+        this.tips = tips;
     }
 
     protected BaseException(BaseStatus status, String tips) {
         super(tips);
         this.status = status;
+        this.tips = tips;
     }
 
     public static BaseException of(BaseStatus status){
