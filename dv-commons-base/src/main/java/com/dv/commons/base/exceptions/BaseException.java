@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class BaseException extends RuntimeException{
     protected BaseStatus status;
+    protected String tips;
     protected BaseException(BaseStatus status, Throwable e){
         super(status.message(),e);
         this.status = status;
@@ -16,13 +17,13 @@ public class BaseException extends RuntimeException{
         this.status = status;
     }
 
-    protected BaseException(BaseStatus status, String message, Throwable e) {
-        super(message,e);
+    protected BaseException(BaseStatus status, String tips, Throwable e) {
+        super(tips,e);
         this.status = status;
     }
 
-    protected BaseException(BaseStatus status, String message) {
-        super(message);
+    protected BaseException(BaseStatus status, String tips) {
+        super(tips);
         this.status = status;
     }
 

@@ -39,10 +39,10 @@ public final class AssertUtil {
      * 新增异常
      *
      * @param status 状态码
-     * @param msg    异常
+     * @param tips    提示
      */
-    public static void newException(BaseStatus status, String msg) {
-        throw BaseException.of(status, msg);
+    public static void newException(BaseStatus status, String tips) {
+        throw BaseException.of(status, tips);
     }
 
     public static void newException(RuntimeException e){

@@ -4,7 +4,7 @@
 
   <groupId>com.dv.commons</groupId>
   <artifactId>dv-commons</artifactId>
-  <version>2.7.7-RELEASE</version>
+  <version>2.7.8-RELEASE</version>
   <modules>
     <module>dv-commons-jwt</module>
     <module>dv-commons-http</module>
