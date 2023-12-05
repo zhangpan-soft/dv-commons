@@ -1,7 +1,7 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 /**
- * 策略机工厂
+ * Strategy Machine Factory
  */
 public class StrategyMachineFactory {
 

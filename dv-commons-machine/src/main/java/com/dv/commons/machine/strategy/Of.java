@@ -1,10 +1,10 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 /**
- * 关于
- * @param <S>
- * @param <C>
- * @param <R>
+ * {@link Of}
+ * @param <S> strategy
+ * @param <C> context
+ * @param <R> result
  */
 public interface Of<S,C,R> {
     When<S,C,R> when(Condition<S,C,R> condition);

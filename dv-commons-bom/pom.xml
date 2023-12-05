@@ -3,7 +3,7 @@
     <parent>
         <artifactId>dv-commons</artifactId>
         <groupId>com.dv.commons</groupId>
-        <version>2.7.9-RELEASE</version>
+        <version>3.0.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -42,6 +42,11 @@
             <dependency>
                 <groupId>com.dv.commons</groupId>
                 <artifactId>dv-commons-script</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dv.commons</groupId>
+                <artifactId>dv-commons-machine</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

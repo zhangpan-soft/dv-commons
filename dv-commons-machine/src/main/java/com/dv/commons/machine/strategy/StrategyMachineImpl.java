@@ -1,13 +1,13 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 策略机实现
- * @param <S>
- * @param <C>
- * @param <R>
+ * Strategy Machine Impl
+ * @param <S> strategy
+ * @param <C> context
+ * @param <R> result
  */
 class StrategyMachineImpl<S,C,R> implements StrategyMachine<S,C,R> {
 

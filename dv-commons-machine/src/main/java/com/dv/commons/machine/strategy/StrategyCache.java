@@ -1,9 +1,9 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 import java.util.Map;
 
 /**
- * 缓存
+ * {@link StrategyCache}
  */
 class StrategyCache {
 

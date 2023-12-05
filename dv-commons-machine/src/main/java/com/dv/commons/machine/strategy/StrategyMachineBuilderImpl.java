@@ -1,4 +1,4 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 策略机建造者实现
- * @param <S>
- * @param <C>
- * @param <R>
+ * {@link StrategyMachineBuilderImpl}
+ * @param <S> strategy
+ * @param <C> context
+ * @param <R> result
  */
 class StrategyMachineBuilderImpl<S,C,R> implements StrategyMachineBuilder<S,C,R>{
     private final Map<S, List<Strategy<S,C,R>>> map = new ConcurrentHashMap<>();

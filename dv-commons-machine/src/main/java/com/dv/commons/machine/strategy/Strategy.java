@@ -1,10 +1,10 @@
-package com.dv.commons.base.strategy;
+package com.dv.commons.machine.strategy;
 
 /**
- * 策略
- * @param <S>
- * @param <C>
- * @param <R>
+ * {@link Strategy}
+ * @param <S> strategy
+ * @param <C> context
+ * @param <R> result
  */
 public interface Strategy<S, C, R> {
     S strategy();
