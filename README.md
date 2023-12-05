@@ -1,4 +1,5 @@
 # dv-commons
+- dv-commons-machine
 - dv-commons-jwt
 - dv-commons-http
 - dv-commons-base
@@ -6,6 +7,10 @@
 
 # used
 - 添加mirror或repository为: `https://nexus.51000.net/repository/maven-public/`
+
+### dv-commons-machine
+#### 策略机
+#### 说明文档: https://blog.csdn.net/zhangpan_soft/article/details/134791815
 
 ### dv-commons-jwt
 ```java
